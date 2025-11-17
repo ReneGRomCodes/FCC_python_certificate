@@ -25,9 +25,8 @@ project. You can view the code directly in your browser or download it to your l
 
 ## Course Information
 
-For more information about the FreeCodeCamp "Scientific Computing with Python Certificate" course, including
-syllabus, requirements, and how to enroll, visit the
-[FreeCodeCamp website](https://www.freecodecamp.org/learn/python-v9/).
+For more information about the FreeCodeCamp "Python Certificate" course, including syllabus, requirements, and how to
+enroll, visit the [FreeCodeCamp website](https://www.freecodecamp.org/learn/python-v9/).
 
 ## Feedback and Contributions
 

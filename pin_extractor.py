@@ -1,4 +1,4 @@
-def pin_extractor(poems):
+def pin_extractor(poems: list[str]) -> list[str]:
     """Extract hidden PIN codes from a list of poems.
     Each poem is processed line by line. For line *i*, the function looks for
     the *i*-th word (0-indexed). The digit added to the PIN is the length of

@@ -1,21 +1,21 @@
 class Category:
     """Represent a category for specific budget."""
 
-    def __init__(self, name):
+    def __init__(self, name: str):
         """Initialize name, ledger and balance attributes."""
-        self.name = name
-        self.ledger = []
-        self.balance = 0
+        self.name: str = name
+        self.ledger: list[dict] = []
+        self.balance: int = 0
 
-    def __str__(self):
+    def __str__(self) -> str:
         """Return a formatted representation of the budget category, including ledger entries and the current
         balance."""
         # Set 'self.name' centered in between "*"s for a 30-character long title line.
-        title_line_stars = (30 - len(self.name)) // 2 * "*"
-        title_line = title_line_stars + self.name + title_line_stars
+        title_line_stars: str = (30 - len(self.name)) // 2 * "*"
+        title_line: str = title_line_stars + self.name + title_line_stars
         if len(title_line) < 30:
             title_line = "*" + title_line
-        budget = title_line + "\n"
+        budget: str = title_line + "\n"
         # Construct the ledger section in block style format.
         for position in self.ledger:
             # Restrict length of each line in ledger to 30 characters. Shorten description to do so if necessary.
@@ -25,14 +25,14 @@ class Category:
             # Restrict length of description to 23 characters.
             if len(position["description"]) > 23:
                 position["description"] = position["description"][:23]
-            formatted_amount = "{:.2f}".format(position["amount"])
-            length_space = (30 - (len(position["description"]) + len(formatted_amount))) * " "
+            formatted_amount: str = "{:.2f}".format(position["amount"])
+            length_space: str = (30 - (len(position["description"]) + len(formatted_amount))) * " "
             budget += position["description"] + length_space + formatted_amount + "\n"
         # Total budget.
         budget += f"Total: {self.balance:.2f}"
         return budget
 
-    def deposit(self, amount, description=""):
+    def deposit(self, amount: float, description: str="") -> None:
         """Take numeric value 'amount' and optional string 'description', insert them into 'self.ledger' and add
         'amount' to 'self.budget'."""
         self.ledger.append({"amount": amount,
@@ -40,11 +40,11 @@ class Category:
                             })
         self.balance += amount
 
-    def withdraw(self, amount, description=""):
+    def withdraw(self, amount: float, description: str="") -> bool:
         """Take numeric value 'amount' and optional string 'description', insert them into 'self.ledger' and subtract
         'amount' from 'self.budget' if sufficient funds are available. Return 'True' if withdrawal took place, 'False'
         if not."""
-        check = self.check_funds(amount)
+        check: bool = self.check_funds(amount)
         if check:
             self.ledger.append({"amount": amount * (-1),
                                 "description": description,
@@ -54,14 +54,14 @@ class Category:
         else:
             return False
 
-    def get_balance(self):
+    def get_balance(self) -> float:
         """Return numeric value for 'self.balance'."""
         return self.balance
 
-    def transfer(self, amount, other_category):
+    def transfer(self, amount: float, other_category: Category) -> bool:
         """Transfer numeric value 'amount' to instance 'other_category', update 'self.ledger' and 'self.budget' in each
         instance if sufficient funds are available and return 'True' if transfer took place, 'False' if not."""
-        check = self.check_funds(amount)
+        check: bool = self.check_funds(amount)
         if check:
             self.ledger.append({"amount": amount * (-1),
                                 "description": "Transfer to " + other_category.name,
@@ -75,7 +75,7 @@ class Category:
         else:
             return False
 
-    def check_funds(self, amount):
+    def check_funds(self, amount: float) -> bool:
         """Check if numeric value 'amount' exceeds 'self.balance'. Return 'False' if it does and 'True' if not."""
         if amount > self.balance:
             return False
@@ -83,9 +83,9 @@ class Category:
             return True
 
 
-def get_expenses_amount(category):
+def get_expenses_amount(category: Category) -> int | float:
     """Take instance 'category', add all expenses and return them as positive numeric value 'expenses_amount'."""
-    expenses_amount = 0
+    expenses_amount: int | float = 0
     for position in category.ledger:
         if position["amount"] < 0:
             expenses_amount -= position["amount"]
@@ -93,12 +93,12 @@ def get_expenses_amount(category):
     return expenses_amount
 
 
-def get_expenses_percent(categories):
+def get_expenses_percent(categories: list[Category]) -> list:
     """Take a list of 'categories' and return a list of dictionaries containing the name of each category and the
     percentage (rounded down to the nearest 10) each category contributes to total expenses."""
     # Assign empty list 'expenses_percent' and variable 'exp_sum'.
-    expenses_percent = []
-    exp_sum = 0
+    expenses_percent: list = []
+    exp_sum: int | float = 0
 
     # Add all expenses from instances in 'categories'.
     for category in categories:
@@ -116,11 +116,11 @@ def get_expenses_percent(categories):
     return expenses_percent
 
 
-def get_line_percent(expenses, n):
+def get_line_percent(expenses: list, n: int) -> str:
     """Take list 'expenses' and value 'n' to build and return 'line' for spending chart. 'expenses' is a specific list
     of dictionaries created through 'get_expenses_percent()' function."""
     # Assign empty starting value for 'line'.
-    line = ""
+    line: str = ""
 
     # Build first section of 'line' based on value 'n'.
     if n == 100:
@@ -140,10 +140,10 @@ def get_line_percent(expenses, n):
     return line
 
 
-def get_line_name(names, n):
+def get_line_name(names: list[str], n: int) -> str:
     """Take list 'names' and value 'n' to build and return 'line' for spending chart."""
     # Create variable 'line' with multiple spaces to offset later additions to the right.
-    line = "     "
+    line: str = "     "
 
     # Add character at index 'n' from each item in list 'names'. try-except clauses to avoid IndexError with shorter
     # names.
@@ -156,14 +156,13 @@ def get_line_name(names, n):
     return line
 
 
-
-def create_spend_chart(categories):
+def create_spend_chart(categories: list[Category]) -> str:
     """Take list of instances 'categories', build a bar chart containing the name of each category and the percentage
     (rounded down to the nearest 10) each category contributes to total expenses."""
     # Assign starting values for 'chart', 'expenses_percent' and 'title_line'.
-    chart = ""
-    expenses_percent = get_expenses_percent(categories)
-    title_line = "Percentage spent by category"
+    chart: str = ""
+    expenses_percent: list = get_expenses_percent(categories)
+    title_line: str = "Percentage spent by category"
 
     # Build upper section of the bar chart including title, percentage, bars for percentages and a line dividing lower
     # section for category names.
@@ -173,7 +172,7 @@ def create_spend_chart(categories):
     chart += "    -" + "---" * len(categories) + "\n"
 
     # Create list 'budget_names' to help build lower section of the chart.
-    budget_names = []
+    budget_names: list[str] = []
     for category in categories:
         budget_names.append(category.name)
     # Establish length of longest item in 'budget_names' for use in loops. '-1' is to account for offset and help avoid

@@ -1,4 +1,4 @@
-def caesar(text, shift, encrypt=True):
+def caesar(text: str, shift: int, encrypt:bool=True) -> str:
     """Apply a Caesar cipher to the given text.
     ARGS:
         text (str): The text to encrypt or decrypt.
@@ -14,17 +14,17 @@ def caesar(text, shift, encrypt=True):
     if shift < 1 or shift > 25:
         return "Shift must be an integer between 1 and 25."
 
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
+    alphabet: str = "abcdefghijklmnopqrstuvwxyz"
 
     # If decrypting, just flip the shift direction
     if not encrypt:
         shift = -shift
 
     # Create the shifted alphabet
-    shifted_alphabet = alphabet[shift:] + alphabet[:shift]
+    shifted_alphabet: str = alphabet[shift:] + alphabet[:shift]
 
     # Build translation table for both lowercase and uppercase
-    translation_table = str.maketrans(
+    translation_table: dict[int, int] = str.maketrans(
         alphabet + alphabet.upper(),
         shifted_alphabet + shifted_alphabet.upper()
     )
@@ -33,7 +33,7 @@ def caesar(text, shift, encrypt=True):
     return text.translate(translation_table)
 
 
-def encrypt(text, shift):
+def encrypt(text: str, shift: int) -> str:
     """Encrypt text using the Caesar cipher.
     ARGS:
         text (str): The text to encrypt.
@@ -44,7 +44,7 @@ def encrypt(text, shift):
     return caesar(text, shift)
 
 
-def decrypt(text, shift):
+def decrypt(text: str, shift: int) -> str:
     """Decrypt text encoded with the Caesar cipher.
     ARGS:
         text (str): The text to decrypt.

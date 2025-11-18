@@ -1,8 +1,8 @@
 # Certificate Projects
 ## 1. User Configuration Manager
 
-A Python script named arithmetic_formatter.py that allows users to manage their settings such as theme, language, and
-notifications. 
+A Python script named user_configuration_manager.py that allows users to manage their settings such as theme, language,
+and notifications. 
 ## 2. Budget App
 
 A Python script named budget_app.py containing a Category class for managing budget categories. It allows for deposits,

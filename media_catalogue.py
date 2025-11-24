@@ -1,0 +1,110 @@
+class MediaError(Exception):
+    """Custom exception for media-related errors."""
+
+    def __init__(self, message: str, obj: Movie):
+        super().__init__(message)
+        self.obj: str = obj
+
+
+class Movie:
+    """Parent class representing a movie."""
+
+    def __init__(self, title: str, year: int, director: str, duration: int):
+        if not title.strip():
+            raise ValueError("Title cannot be empty")
+        if year < 1895:
+            raise ValueError("Year must be 1895 or later")
+        if not director.strip():
+            raise ValueError("Director cannot be empty")
+        if duration <= 0:
+            raise ValueError("Duration must be positive")
+
+        self.title: str = title
+        self.year: int = year
+        self.director: str = director
+        self.duration: int = duration
+
+    def __str__(self):
+        return f"{self.title} ({self.year}) - {self.duration} min, {self.director}"
+
+
+class TVSeries(Movie):
+    """Child class representing an entire TV series."""
+
+    def __init__(self, title: str, year: int, director: str, duration: int, seasons: int, total_episodes: int):
+        super().__init__(title, year, director, duration)
+
+        if seasons < 1:
+            raise ValueError("Seasons must be 1 or greater")
+        if total_episodes < 1:
+            raise ValueError("Total episodes must be 1 or greater")
+
+        self.seasons: int = seasons
+        self.total_episodes: int = total_episodes
+
+    def __str__(self):
+        return (
+            f"{self.title} ({self.year}) - {self.seasons} seasons, {self.total_episodes} episodes,"
+            f"{self.duration} min avg, {self.director}"
+        )
+
+
+class MediaCatalogue:
+    """A catalogue that can store different types of media items."""
+
+    def __init__(self):
+        self.items: list[Movie] = []
+
+    def add(self, media_item: Movie) -> None:
+        if not isinstance(media_item, Movie):
+            raise MediaError("Only Movie or TVSeries instances can be added", media_item)
+
+        self.items.append(media_item)
+
+    def get_movies(self) -> list[Movie]:
+        return [item for item in self.items if type(item) is Movie]
+
+    def get_tv_series(self) -> list[TVSeries]:
+        return [item for item in self.items if isinstance(item, TVSeries)]
+
+    def __str__(self):
+        if not self.items:
+            return "Media Catalogue (empty)"
+
+        movies: list[Movie] = self.get_movies()
+        series: list[TVSeries] = self.get_tv_series()
+
+        result: str = f"Media Catalogue ({len(self.items)} items):\n\n"
+
+        if movies:
+            result += "=== MOVIES ===\n"
+            for i, movie in enumerate(movies, 1):
+                result += f"{i}. {movie}\n"
+        if series:
+            result += "=== TV SERIES ===\n"
+            for i, series in enumerate(series, 1):
+                result += f"{i}. {series}\n"
+
+        return result
+
+
+catalogue: MediaCatalogue = MediaCatalogue()
+
+try:
+    movie1: Movie = Movie("The Matrix", 1999, "The Wachowskis", 136)
+    catalogue.add(movie1)
+    movie2: Movie = Movie("Inception", 2010, "Christopher Nolan", 148)
+    catalogue.add(movie2)
+
+    series1: TVSeries = TVSeries("Scrubs", 2001, "Bill Lawrence", 24, 9, 182)
+    catalogue.add(series1)
+    series2: TVSeries = TVSeries("Breaking Bad", 2008, "Vince Gilligan", 47, 5, 62)
+    catalogue.add(series2)
+
+    print(catalogue)
+
+except ValueError as e:
+    print(f"Validation Error: {e}")
+except MediaError as e:
+    print(f"Media Error: {e}")
+    print(f"Unable to add {e.obj}: {type(e.obj)}")

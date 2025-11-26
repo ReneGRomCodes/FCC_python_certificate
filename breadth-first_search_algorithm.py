@@ -6,8 +6,10 @@ def gen_parentheses(pairs: int) -> str | list[str]:
 
     queue: list[tuple[str, int, int]] = [("", 0, 0)]
     result: list[str] = []
+
     while queue:
         current, opens_used, closes_used = queue.pop(0)
+
         if len(current) == 2 * pairs:
             result.append(current)
         else:

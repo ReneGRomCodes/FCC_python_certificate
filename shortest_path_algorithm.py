@@ -9,16 +9,16 @@ adj_matrix = [
 ]
 
 
-def shortest_path(matrix, start_node, target_node=None):
+def shortest_path(matrix: list[list[int | float]], start_node: int) -> None:
     n = len(matrix)
-    distances = [INF] * n
-    distances[start_node] = 0
-    paths = [[node_no] for node_no in range(n)]
-    visited = [False] * n
+    distances: list[float] = [INF] * n
+    distances[start_node]: int = 0
+    paths: list[list[int]] = [[node_no] for node_no in range(n)]
+    visited: list[bool] = [False] * n
 
     for _ in range(n):
-        min_distance = INF
-        current = -1
+        min_distance: float = INF
+        current: int = -1
         for node_no in range(n):
             if not visited[node_no] and distances[node_no] < min_distance:
                 min_distance = distances[node_no]
@@ -30,12 +30,9 @@ def shortest_path(matrix, start_node, target_node=None):
         visited[current] = True
 
         for node_no in range(n):
-            distance = matrix[current][node_no]
+            distance: int = matrix[current][node_no]
             if distance != INF and not visited[node_no]:
-                new_distance = distances[current] + distance
+                new_distance: float = distances[current] + distance
                 if new_distance < distances[node_no]:
-                    distances[node_no] = new_distance
+                    distances[node_no]: float = new_distance
                     paths[node_no] = paths[current] + [node_no]
-
-
-shortest_path(adj_matrix, start_node=0, target_node=5)

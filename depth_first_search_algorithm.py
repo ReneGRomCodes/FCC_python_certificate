@@ -1,14 +1,14 @@
-def dfs(adj_matrix, node_label):
-    n = len(adj_matrix)
+def dfs(adj_matrix: list[list[int]], node_label: int) -> list[int]:
+    n: int = len(adj_matrix)
     if n == 0:
         return []
 
-    visited = [False] * n
-    result = []
-    stack = [node_label]
+    visited: list[bool] = [False] * n
+    result: list[int] = []
+    stack: list[int] = [node_label]
 
     while stack:
-        node = stack.pop()
+        node: int = stack.pop()
 
         if visited[node]:
             continue

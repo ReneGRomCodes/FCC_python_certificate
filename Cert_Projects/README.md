@@ -15,3 +15,7 @@ It includes methods for setting dimensions, calculating area, perimeter, diagona
 ## 4. Hash Table
 A Python script named hash_table.py that works by taking a key as an input and then hashing this key according to a
 specific hashing function.
+
+## 5. Tower of Hanoi
+The puzzle starts with the disks piled up on the first rod, in decreasing size, with the smallest disk on top and the
+largest disk on the bottom. The goal of the Tower of Hanoi puzzle is moving all the disks to the last rod.
